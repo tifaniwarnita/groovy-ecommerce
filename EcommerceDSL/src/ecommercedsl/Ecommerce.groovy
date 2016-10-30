@@ -33,22 +33,24 @@ class Ecommerce {
     
     def login(username, password) {
         def row = dbConn.checkLogin(username, password)
-        print "Login succeed"
+        println "Login succeed"
     }
     
     def add(action) {
-        [username: { username ->
-            [email: { email ->
-                [password : { pwd ->
-                    [name : { name ->
-                        [address : { addr ->
-                            User user = new User(username:username, email:email, password:pwd, name:name, address:addr)
-                            action(user)
-                        }]
+        [seller: { seller ->
+            [name: { name ->
+                [price : { price ->
+                    [description : { description ->
+                        Product product = new Product(seller:seller, name:name, price:price, description:description)
+                        action(product)
                     }]
                 }]
             }]
         }]
+    }
+    
+    def product = {
+        dbConn.addProduct(it)
     }
 }
 

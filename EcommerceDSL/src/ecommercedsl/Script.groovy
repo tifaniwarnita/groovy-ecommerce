@@ -14,3 +14,5 @@ this.metaClass.mixin script
 //sign up username "candyolivia" email "candy@gmail.com" password "123" name "candy" address "Jl.Cisitu Lama IX"
 
 login "candyolivia", "123"
+
+add product seller "asanilta" name "ABC" price "100000" description "lalala"
