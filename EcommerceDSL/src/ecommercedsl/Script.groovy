@@ -11,4 +11,6 @@ def script = new GroovyScriptEngine( '.' ).with {
 } 
 this.metaClass.mixin script
 
-sign up username "candyolivia" email "candy@gmail.com" password "123" name "candy" address "Jl.Cisitu Lama IX"
+//sign up username "candyolivia" email "candy@gmail.com" password "123" name "candy" address "Jl.Cisitu Lama IX"
+
+login "candyolivia", "123"

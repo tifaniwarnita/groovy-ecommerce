@@ -14,7 +14,7 @@ import groovy.sql.Sql
  */
 class DB {
     def sql = Sql.newInstance('jdbc:mysql://localhost:3306/ecommerce_groovy', 'root', '', 'com.mysql.jdbc.Driver')
-    
+        
     def checkLogin(username,password) {
         def rows = sql.rows("SELECT * FROM user WHERE username='"+username+"' AND password='"+password+"'");
         if (rows.isEmpty()) return false;
@@ -38,9 +38,14 @@ class DB {
     }
     
     def addProduct(info) {
-        //def params = etc
+        def params = [info.seller, info.name, info.price, info.description]
         def query = "INSERT INTO product (seller,name,price,description) values (?,?,?,?)";
-        //sql.execute query,params;
+        try {
+            sql.execute query,params;
+            println("Product "+ info.name +" successfully added"); 
+        } catch(Exception ex) {
+            println("Add Product failed")
+        }
     }
     
     def addTransaction(info) {

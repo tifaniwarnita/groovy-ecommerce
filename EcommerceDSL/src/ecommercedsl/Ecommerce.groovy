@@ -30,6 +30,26 @@ class Ecommerce {
     def up = {
         dbConn.register(it)
     }
+    
+    def login(username, password) {
+        def row = dbConn.checkLogin(username, password)
+        print "Login succeed"
+    }
+    
+    def add(action) {
+        [username: { username ->
+            [email: { email ->
+                [password : { pwd ->
+                    [name : { name ->
+                        [address : { addr ->
+                            User user = new User(username:username, email:email, password:pwd, name:name, address:addr)
+                            action(user)
+                        }]
+                    }]
+                }]
+            }]
+        }]
+    }
 }
 
 
