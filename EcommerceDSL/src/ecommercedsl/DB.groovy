@@ -22,12 +22,12 @@ class DB {
     }
     
     def register(user) {
-        def params = ['${user.username}', '${user.email}', '${user.password}', '${user.name}', '${user.address}']
+        def params = [user.username, user.email, user.password, user.name, user.address]
         def query = "INSERT INTO user (username,email,password,name,address) VALUES (?,?,?,?,?)";
+        
         try {
             sql.execute query,params;
-            assert sql.updateCount == 1
-            println("User "+${user.username}+" successfully registered"); 
+            println("User "+ user.username +" successfully registered"); 
         } catch(Exception ex) {
             println("Registration failed")
         }
@@ -66,5 +66,8 @@ class DB {
         //select * from transaction where seller=username
         //pake sql.eachRow
     }
+    
+    
+    
 }
 
