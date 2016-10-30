@@ -11,6 +11,7 @@ package ecommercedsl
  * @author ASUS X202E
  */
 class Review {
+    def id
     def product
     def reviewer
     def rating

@@ -15,4 +15,8 @@ this.metaClass.mixin script
 
 login "candyolivia", "123"
 
-add product seller "asanilta" name "ABC" price "100000" description "lalala"
+//add product seller "asanilta" name "ABC" price "100000" description "lalala"
+
+getSeller "1"
+
+send review product "1" reviewer "tifani" rating "4" content "lucu"

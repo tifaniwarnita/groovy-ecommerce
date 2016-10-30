@@ -57,9 +57,14 @@ class DB {
     }
     
     def addReview(info) {
-        //def params
-        //insert into review (product,reviewer,rating,content) values (?,?,?,?)
-        //sql.execute query,params
+        def params = [info.product, info.reviewer, info.rating, info.content]
+        def query = "INSERT INTO review (product,reviewer,rating,content) values (?,?,?,?)";
+        try {
+            sql.execute query,params;
+            println("Review to Product_ID "+ info.product +" successfully added"); 
+        } catch(Exception ex) {
+            println("Add review failed")
+        }
     }
    
     def getPurchases() {

@@ -47,10 +47,33 @@ class Ecommerce {
                 }]
             }]
         }]
+    
     }
     
     def product = {
         dbConn.addProduct(it)
+    }
+    
+    def send(action) {
+        [product: { product ->
+            [reviewer: { reviewer ->
+                [rating : { rating ->
+                    [content : { content ->
+                        Review review = new Review(product:product, reviewer:reviewer, rating:rating, content:content)
+                        action(review)
+                    }]
+                }]
+            }]
+        }]
+    }
+    
+    def review = {
+        dbConn.addReview(it)
+    }
+    
+    def getSeller(id) {
+        def row = dbConn.getProductSeller(id)
+        println row.seller
     }
 }
 
