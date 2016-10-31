@@ -14,7 +14,7 @@ import groovy.sql.Sql
  */
 class DB {
     def sql = Sql.newInstance('jdbc:mysql://localhost:3306/ecommerce_groovy', 'root', '', 'com.mysql.jdbc.Driver')
-    
+        
     def checkLogin(username,password) {
         def rows = sql.rows("SELECT * FROM user WHERE username='"+username+"' AND password='"+password+"'");
         if (rows.isEmpty()) return false;
@@ -22,12 +22,12 @@ class DB {
     }
     
     def register(user) {
-        def params = ['${user.username}', '${user.email}', '${user.password}', '${user.name}', '${user.address}']
+        def params = [user.username, user.email, user.password, user.name, user.address]
         def query = "INSERT INTO user (username,email,password,name,address) VALUES (?,?,?,?,?)";
+        
         try {
             sql.execute query,params;
-            assert sql.updateCount == 1
-            println("User "+${user.username}+" successfully registered"); 
+            println("User "+ user.username +" successfully registered"); 
         } catch(Exception ex) {
             println("Registration failed")
         }
@@ -38,9 +38,14 @@ class DB {
     }
     
     def addProduct(info) {
-        //def params = etc
+        def params = [info.seller, info.name, info.price, info.description]
         def query = "INSERT INTO product (seller,name,price,description) values (?,?,?,?)";
-        //sql.execute query,params;
+        try {
+            sql.execute query,params;
+            println("Product "+ info.name +" successfully added"); 
+        } catch(Exception ex) {
+            println("Add Product failed")
+        }
     }
     
     def addTransaction(info) {
@@ -52,9 +57,14 @@ class DB {
     }
     
     def addReview(info) {
-        //def params
-        //insert into review (product,reviewer,rating,content) values (?,?,?,?)
-        //sql.execute query,params
+        def params = [info.product, info.reviewer, info.rating, info.content]
+        def query = "INSERT INTO review (product,reviewer,rating,content) values (?,?,?,?)";
+        try {
+            sql.execute query,params;
+            println("Review to Product_ID "+ info.product +" successfully added"); 
+        } catch(Exception ex) {
+            println("Add review failed")
+        }
     }
    
     def getPurchases() {
@@ -66,5 +76,8 @@ class DB {
         //select * from transaction where seller=username
         //pake sql.eachRow
     }
+    
+    
+    
 }
 
