@@ -83,7 +83,7 @@ class Ecommerce {
         [product: { product ->
             [quantity : { quantity ->
                 if (loggedInUser==null) {
-                    println "Login first to buy product"
+                    println "Login first to make transaction"
                 } else {
                     Transaction transaction = new Transaction(product:product, quantity: quantity, buyer:loggedInUser)
                     action(transaction)

@@ -34,7 +34,9 @@ class DB {
     }
     
     def getProductSeller(product_id) {
-        return sql.firstRow("SELECT seller FROM product WHERE id="+product_id).seller;
+        def row = sql.firstRow("SELECT seller FROM product WHERE id="+product_id);
+        if (row==null) return null;
+        else return row.seller;
     }
     
     def addProduct(info) {
@@ -49,14 +51,16 @@ class DB {
     }
     
     def addTransaction(info) {
-        def seller = getProductSeller(info.product);
-        def params = [info.buyer,seller,info.product,info.quantity]
-        def query = "INSERT INTO transaction (buyer,seller,product,quantity) values (?,?,?,?)"
-        try {
-            sql.execute query,params;
-            println("Transaction successful"); 
-        } catch(Exception ex) {
-            println("Transaction failed")
+        if (getProductSeller(info.product)==null) println "Product does not exist"
+        else {
+            def params = [info.buyer,seller,info.product,info.quantity]
+            def query = "INSERT INTO transaction (buyer,seller,product,quantity) values (?,?,?,?)"
+            try {
+                sql.execute query,params;
+                println("Transaction successful"); 
+            } catch(Exception ex) {
+                println("Transaction failed")
+            }
         }
     }
     
