@@ -11,6 +11,7 @@ import groovy.xml.MarkupBuilder
 
 class Ecommerce {
     def dbConn = new DB()
+    def loggedInUser = null;
     
     def sign(action) {
         [username: { username ->
@@ -32,22 +33,27 @@ class Ecommerce {
     }
     
     def login(username, password) {
-        def row = dbConn.checkLogin(username, password)
-        println "Login succeed"
+        if (dbConn.checkLogin(username, password)) {
+            loggedInUser = username;
+            println "Login succeed"
+        } else {
+            println "Login failed"
+        }
     }
     
     def add(action) {
-        [seller: { seller ->
-            [name: { name ->
-                [price : { price ->
-                    [description : { description ->
-                        Product product = new Product(seller:seller, name:name, price:price, description:description)
+        [name: { name ->
+            [price : { price ->
+                [description : { description ->
+                    if (loggedInUser==null) {
+                        println "Login first to add product"
+                    } else {
+                        Product product = new Product(seller:loggedInUser, name:name, price:price, description:description)
                         action(product)
-                    }]
+                    }
                 }]
             }]
         }]
-    
     }
     
     def product = {
@@ -56,12 +62,14 @@ class Ecommerce {
     
     def send(action) {
         [product: { product ->
-            [reviewer: { reviewer ->
-                [rating : { rating ->
-                    [content : { content ->
-                        Review review = new Review(product:product, reviewer:reviewer, rating:rating, content:content)
-                        action(review)
-                    }]
+            [rating : { rating ->
+                [content : { content ->
+                    if (loggedInUser==null) {
+                        println "Login first to send review"
+                    } else {  
+                        Review review = new Review(product:product, reviewer:loggedInUser, rating:rating, content:content)
+                       action(review)
+                    }
                 }]
             }]
         }]
@@ -71,10 +79,39 @@ class Ecommerce {
         dbConn.addReview(it)
     }
     
-    def getSeller(id) {
-        def row = dbConn.getProductSeller(id)
-        println row.seller
+    def make(action) {
+        [product: { product ->
+            [quantity : { quantity ->
+                if (loggedInUser==null) {
+                    println "Login first to buy product"
+                } else {
+                    Transaction transaction = new Transaction(product:product, quantity: quantity, buyer:loggedInUser)
+                    action(transaction)
+                }
+            }]
+        }]
     }
+    
+    def transaction = {
+        dbConn.addTransaction(it)
+    }
+    
+    def get(action) {
+        if (loggedInUser==null) {
+            println "Login first to get info"
+        } else {
+            action(loggedInUser)
+        }
+    }
+    
+    def sales = {
+        dbConn.getSales(it)
+    }
+    
+    def purchases = {
+        dbConn.getPurchases(it)
+    }
+    
 }
 
 

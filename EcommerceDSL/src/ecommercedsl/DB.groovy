@@ -34,7 +34,7 @@ class DB {
     }
     
     def getProductSeller(product_id) {
-        return sql.rows("SELECT seller FROM product WHERE id="+product_id)[0];
+        return sql.firstRow("SELECT seller FROM product WHERE id="+product_id).seller;
     }
     
     def addProduct(info) {
@@ -49,11 +49,15 @@ class DB {
     }
     
     def addTransaction(info) {
-        //getproductseller
-        //hitung totalprice
-        //def params
-        //insert into transaction (buyer,seller,product,quantity,total_price) values (?,?,?,?,?)
-        //sql.execute query,params
+        def seller = getProductSeller(info.product);
+        def params = [info.buyer,seller,info.product,info.quantity]
+        def query = "INSERT INTO transaction (buyer,seller,product,quantity) values (?,?,?,?)"
+        try {
+            sql.execute query,params;
+            println("Transaction successful"); 
+        } catch(Exception ex) {
+            println("Transaction failed")
+        }
     }
     
     def addReview(info) {
@@ -67,14 +71,14 @@ class DB {
         }
     }
    
-    def getPurchases() {
-        //select * from transaction where buyer=username
-        //pake sql.eachRow
+    def getPurchases(username) {
+        println "Purchases of "+username
+        println sql.rows("SELECT date,seller,product,quantity from transaction where buyer='"+username+"' ORDER BY date DESC")
     }
     
-    def getSales() {
-        //select * from transaction where seller=username
-        //pake sql.eachRow
+    def getSales(username) {
+        println "Sales of "+username
+        println sql.rows("SELECT date,buyer,product,quantity from transaction where seller='"+username+"' ORDER BY date DESC")
     }
     
     

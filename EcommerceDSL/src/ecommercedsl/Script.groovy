@@ -11,12 +11,22 @@ def script = new GroovyScriptEngine( '.' ).with {
 } 
 this.metaClass.mixin script
 
-//sign up username "candyolivia" email "candy@gmail.com" password "123" name "candy" address "Jl.Cisitu Lama IX"
+sign up username "candyolivia" email "candy@gmail.com" password "123" name "candy" address "Jl.Cisitu Lama IX"
+
+sign up username "asanilta" email "asanilta@gmail.com" password "abc" name "Asanilta Fahda" address "Jl. Ciwaregu No. 3-B"
 
 login "candyolivia", "123"
 
-//add product seller "asanilta" name "ABC" price "100000" description "lalala"
+add product name "Produk Keren" price "50000" description "Produk ini sangat keren"
 
-getSeller "1"
+login "asanilta", "abc"
 
-send review product "1" reviewer "tifani" rating "4" content "lucu"
+make transaction product "2" quantity "5"
+
+send review product "2" rating "5" content "Emang keren ternyata"
+
+get purchases
+
+login "candyolivia", "123"
+
+get sales

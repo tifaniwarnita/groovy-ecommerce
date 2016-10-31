@@ -16,7 +16,6 @@ class Transaction {
     def seller
     def product
     def quantity
-    def address
     def totalPrice
 }
 
